@@ -210,17 +210,16 @@ class OracleDB:
         d_edges = np.linspace(delta_range[0], delta_range[1], bins + 1)
         dg_edges = np.linspace(delta_g_range[0], delta_g_range[1], bins + 1)
 
-        i_d = np.clip(np.digitize(d, d_edges) - 1, 0, bins - 1)
-        i_dg = np.clip(np.digitize(dg, dg_edges) - 1, 0, bins - 1)
+        i_d = np.clip(np.digitize(d, d_edges) - 1, 0, bins - 1).astype(np.int32)
+        i_dg = np.clip(np.digitize(dg, dg_edges) - 1, 0, bins - 1).astype(np.int32)
 
         grid = np.full((bins, bins), np.nan, dtype=np.float32)
-        # Vectorized binned minimum
-        flat_idx = i_d * bins + i_dg
-        for idx in range(bins * bins):
-            mask = flat_idx == idx
-            if mask.any():
-                r, c = divmod(idx, bins)
-                grid[r, c] = chi2[mask].min()
+        # Vectorized binned minimum using pandas for speed
+        import pandas as pd
+        tmp = pd.DataFrame({"r": i_d, "c": i_dg, "chi2": chi2})
+        mins = tmp.groupby(["r", "c"])["chi2"].min()
+        for (r, c), val in mins.items():
+            grid[r, c] = val
 
         return grid, d_edges, dg_edges
 
