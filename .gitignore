@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.bak/
+
+# Environments
+.venv/
+venv/
+.env
+
+# IDE & tools
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+*.ipynb_checkpoints/
+.ipynb_checkpoints/
+outputs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large data (download separately – see README)
+data/*.parquet

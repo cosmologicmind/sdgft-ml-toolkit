@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+title: "SDGFT-ML-Toolkit: Inference & Exploration for Six-Dimensional Geometric Field Theory"
+message: >-
+  If you use this software, please cite it using the metadata from this file.
+type: software
+authors:
+  - given-names: David A.
+    family-names: Besemer
+repository-code: "https://github.com/cosmologicmind/sdgft-ml-toolkit"
+url: "https://github.com/cosmologicmind/sdgft-ml-toolkit"
+license: MIT
+version: "1.0.0"
+date-released: "2026-03-04"
+abstract: >-
+  Inference and exploration toolkit for Six-Dimensional Geometric Field Theory
+  (SDGFT). Includes pre-trained GATv2-based GNN ensemble surrogate (37
+  observables from 2 axiom parameters), conditional VAE inverter, and an Oracle
+  Database of 100M pre-computed parameter-space points with χ² scores against
+  22 experimental measurements (PDG 2024, Planck 2018, NuFIT 5.3). Achieves
+  χ²/ndof = 0.81 at the best-fit point with zero free parameters.
+keywords:
+  - theoretical physics
+  - machine learning
+  - graph neural networks
+  - cosmology
+  - particle physics
+  - surrogate model
+  - geometric field theory
