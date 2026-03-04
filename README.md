@@ -3,6 +3,7 @@
 **Inference, querying & exploration toolkit for Six-Dimensional Geometric Field Theory (SDGFT)**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18863347.svg)](https://doi.org/10.5281/zenodo.18863347)
 
 ## What is SDGFT?
 
@@ -24,6 +25,10 @@ Six-Dimensional Geometric Field Theory (SDGFT) is a parameter-free unified theor
 git clone https://github.com/cosmologicmind/sdgft-ml-toolkit.git
 cd sdgft-ml-toolkit
 pip install -e ".[jupyter]"
+
+# Download Oracle Database from Zenodo (5.1 GB)
+wget -P data/ https://zenodo.org/records/18863347/files/oracle_db.parquet
+wget -P data/ https://zenodo.org/records/18863347/files/oracle_gold.parquet
 ```
 
 **Requirements:** Python ≥ 3.10, PyTorch ≥ 2.1, PyTorch Geometric ≥ 2.4
@@ -107,8 +112,8 @@ sdgft-ml-toolkit/
 │   ├── ensemble/           # 5 × GATv2 (best_model.pt + norms.npz)
 │   └── inverter/           # CVAE (best_inverter.pt)
 ├── data/
-│   ├── oracle_db.parquet   # 61.7M rows, 44 columns (3.4 GB)
-│   ├── oracle_gold.parquet # 35M rows, Gold Standard (1.9 GB)
+│   ├── oracle_db.parquet   # 61.7M rows, 44 columns (3.4 GB)  ⬇ Zenodo
+│   ├── oracle_gold.parquet # 35M rows, Gold Standard (1.9 GB)  ⬇ Zenodo
 │   └── oracle_landscape.png
 ├── notebooks/              # 6 self-contained notebooks
 ├── docs/                   # Architecture, schema, experimental data reference
@@ -147,7 +152,21 @@ See [docs/oracle_schema.md](docs/oracle_schema.md) for the full column reference
 
 Full reference: [docs/experimental_data.md](docs/experimental_data.md)
 
+## Data (Oracle Database)
+
+The two Parquet data files (5.1 GB total) are hosted on Zenodo:
+
+> **DOI:** [10.5281/zenodo.18863347](https://doi.org/10.5281/zenodo.18863347)
+
+```bash
+# Download into data/
+wget -P data/ https://zenodo.org/records/18863347/files/oracle_db.parquet
+wget -P data/ https://zenodo.org/records/18863347/files/oracle_gold.parquet
+```
+
 ## Citation
+
+If you use this software or the Oracle Database, please cite:
 
 ```bibtex
 @software{besemer2026sdgft_ml_toolkit,
@@ -156,6 +175,14 @@ Full reference: [docs/experimental_data.md](docs/experimental_data.md)
   year    = {2026},
   url     = {https://github.com/cosmologicmind/sdgft-ml-toolkit},
   version = {1.0.0},
+}
+
+@dataset{besemer2026sdgft_oracle,
+  author  = {Besemer, David A.},
+  title   = {{SDGFT Oracle Database}: High-Resolution Parameter-Observable Lattice},
+  year    = {2026},
+  doi     = {10.5281/zenodo.18863347},
+  publisher = {Zenodo},
 }
 ```
 

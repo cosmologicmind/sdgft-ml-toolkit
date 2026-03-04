@@ -45,6 +45,7 @@ duckdb = ["duckdb>=0.9"]
 Homepage = "https://github.com/cosmologicmind/sdgft-ml-toolkit"
 Repository = "https://github.com/cosmologicmind/sdgft-ml-toolkit"
 Documentation = "https://github.com/cosmologicmind/sdgft-ml-toolkit/tree/main/docs"
+"Oracle Database (Zenodo)" = "https://doi.org/10.5281/zenodo.18863347"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/sdgft_ml"]

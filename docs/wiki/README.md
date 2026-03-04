@@ -2,6 +2,8 @@
 
 **Comprehensive reference for the Six-Dimensional Geometric Field Theory ML Toolkit**
 
+> **Oracle Database DOI:** [10.5281/zenodo.18863347](https://doi.org/10.5281/zenodo.18863347) — 61.7M parameter points, 5.1 GB Parquet
+
 ## Contents
 
 ### Theory

@@ -54,9 +54,18 @@ pip install -e ".[dev]"       # + pytest, ruff, mypy
 
 ## Data Files
 
-The Parquet data files (5.1 GB total) are **not included in git** — they must be downloaded or generated separately.
+The Parquet data files (5.1 GB total) are **not included in git** — they must be downloaded separately.
 
-### Option 1: Copy from Source Project
+### Option 1: Download from Zenodo (Recommended)
+
+The Oracle Database is archived with DOI [10.5281/zenodo.18863347](https://doi.org/10.5281/zenodo.18863347):
+
+```bash
+wget -P data/ https://zenodo.org/records/18863347/files/oracle_db.parquet
+wget -P data/ https://zenodo.org/records/18863347/files/oracle_gold.parquet
+```
+
+### Option 2: Copy from Source Project
 
 If you have the original `sdgft_ml` project:
 
@@ -65,7 +74,7 @@ cp /path/to/sdgft_ml/oracle_db.parquet data/
 cp /path/to/sdgft_ml/oracle_gold.parquet data/
 ```
 
-### Option 2: Use Without Parquet
+### Option 3: Use Without Parquet
 
 The toolkit works without the Parquet files for:
 - ✅ GNN predictions (`SDGFTPredictor`)

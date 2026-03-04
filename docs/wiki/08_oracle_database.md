@@ -6,6 +6,12 @@ The Oracle Database is a **100-million-point pre-computed exploration** of the S
 
 The result: a complete map of "where SDGFT agrees with experiment" — stored as two Parquet files totaling 5.1 GB.
 
+> **Download:** The data files are archived on Zenodo with DOI [10.5281/zenodo.18863347](https://doi.org/10.5281/zenodo.18863347).
+> ```bash
+> wget -P data/ https://zenodo.org/records/18863347/files/oracle_db.parquet
+> wget -P data/ https://zenodo.org/records/18863347/files/oracle_gold.parquet
+> ```
+
 ## Generation Pipeline
 
 ```
