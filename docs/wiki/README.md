@@ -20,6 +20,14 @@
 7. [**How the CVAE Inverter Works**](07_cvae_inverter.md) — Inverse-problem solver: observables → parameters
 8. [**The Oracle Database**](08_oracle_database.md) — 100M-point parameter sweep, quality filtering, and query patterns
 
+### Physics Modules
+
+11. [**Atomic Physics & QED**](11_atomic_qed.md) — Lamb shift, anomalous magnetic moment, Rydberg correction
+12. [**Neutrino Physics**](12_neutrino_physics.md) — Mass sum rule, PMNS mixing, oscillation predictions, DUNE/T2K/JUNO
+13. [**Black Holes & Compact Stars**](13_black_holes.md) — Running G, Hawking temperature, QNM corrections, TOV integration
+14. [**Galaxy Rotation Curves**](14_galaxy_rotation.md) — Freeman disk, G_eff enhancement, SPARC data, Tully-Fisher
+15. [**Collider & Gauge Unification**](15_collider_gauge.md) — Drell-Yan, graviton exchange, KK spectrum, D₄ → SM decomposition
+
 ### Using the Toolkit
 
 9. [**Installation & Setup**](09_installation.md) — Environment, dependencies, data files, first run
@@ -27,4 +35,4 @@
 
 ---
 
-*All pages are self-contained and cross-linked. Start with [What is SDGFT?](01_what_is_sdgft.md) for a conceptual tour, or jump to [How the GNN Surrogate Works](06_gnn_surrogate.md) for the ML specifics.*
+*All pages are self-contained and cross-linked. Start with [What is SDGFT?](01_what_is_sdgft.md) for a conceptual tour, or jump to [How the GNN Surrogate Works](06_gnn_surrogate.md) for the ML specifics, or explore the [Physics Modules](11_atomic_qed.md) for SDGFT predictions.*
