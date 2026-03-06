@@ -27,9 +27,8 @@ cd sdgft-ml-toolkit
 pip install -e ".[jupyter]"
 nbstripout --install   # auto-strips notebook outputs before every commit
 
-# Download Oracle Database from Zenodo (5.1 GB)
-wget -P data/ https://zenodo.org/records/18863347/files/oracle_db.parquet
-wget -P data/ https://zenodo.org/records/18863347/files/oracle_gold.parquet
+# Download Oracle Database from Zenodo (~5.1 GB, with progress bar)
+python data/download_oracle.py
 
 # Download SPARC galaxy database (required for rotation-curve training/validation)
 python data/download_sparc.py
@@ -164,8 +163,7 @@ The two Parquet data files (5.1 GB total) are hosted on Zenodo:
 
 ```bash
 # Download into data/
-wget -P data/ https://zenodo.org/records/18863347/files/oracle_db.parquet
-wget -P data/ https://zenodo.org/records/18863347/files/oracle_gold.parquet
+python data/download_oracle.py
 ```
 
 ## Citation
