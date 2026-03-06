@@ -66,9 +66,9 @@ def run_to_scale(t: float,
                  inv_a3_mz: float | None = None) -> dict[str, float]:
     if inv_a1_mz is None or inv_a2_mz is None or inv_a3_mz is None:
         ia1, ia2, ia3 = couplings_from_observables(ALPHA_EM_INV_MZ, SIN2_THETA_W_MZ, ALPHA_S_MZ)
-        inv_a1_mz = inv_a1_mz or ia1
-        inv_a2_mz = inv_a2_mz or ia2
-        inv_a3_mz = inv_a3_mz or ia3
+        inv_a1_mz = inv_a1_mz if inv_a1_mz is not None else ia1
+        inv_a2_mz = inv_a2_mz if inv_a2_mz is not None else ia2
+        inv_a3_mz = inv_a3_mz if inv_a3_mz is not None else ia3
     ia1, ia2, ia3 = run_inverse_couplings(inv_a1_mz, inv_a2_mz, inv_a3_mz, t)
     sw = sin2_from_inv_couplings(ia1, ia2)
     return {
@@ -104,4 +104,16 @@ SIN2_THETA_W_RG: float = 1.0 / 9.0 + GAMMA_EW_ARITHMETIC
 T_GUT, M_GUT = find_unification_scale()
 
 ALPHA_RATIO_SDGFT: float = (5.0 / 3.0) * (1.0 / 9.0) / (8.0 / 9.0)
-"""α₁/α₂ at M_Pl if sin²θ_W = 1/9  →  5/24 = Δ."""
+"""α₁/α₂ at M_Pl if sin²θ_W = 1/9 → 5/24 = Δ.
+
+Fundamental identity: the ratio of hypercharge to weak gauge coupling
+at the Planck scale equals the topological axiom Δ = 5/24.
+
+    α₁/α₂|_{M_Pl} = (5/3) · sin²θ_W / (1 − sin²θ_W)
+                    = (5/3) · (1/9) / (8/9)
+                    = 5/24 = Δ
+
+This implies the Standard Model gauge hierarchy SU(3)×SU(2)×U(1)
+with its specific coupling ratios emerges from the same 24-cell
+geometry that defines the SDGFT axioms.
+"""

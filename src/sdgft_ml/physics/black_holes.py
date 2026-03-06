@@ -118,54 +118,71 @@ def tov_running_g(r: float, m_enclosed: float, p: float,
 def integrate_tov(rho_c: float, eos_func, dr: float = 10.0,
                   r_max: float = 30_000.0,
                   use_running_g: bool = True) -> dict:
-    """Integrate TOV from centre to surface.
+    """Integrate TOV from centre to surface using adaptive RK45.
 
     Args:
         rho_c: Central density [kg/m³].
         eos_func: p = eos_func(rho) equation of state.
-        dr: Radial step [m].
+        dr: Initial step hint [m] (adaptive solver controls actual steps).
         r_max: Maximum radius [m].
         use_running_g: Use SDGFT running G or classical.
 
     Returns dict with keys: R_km, M_msun, radii, pressures, densities.
     """
-    r = dr
-    m_enc = 0.0
-    rho = rho_c
-    p = eos_func(rho)
+    from scipy.integrate import solve_ivp
 
-    radii, pressures, densities, masses = [r], [p], [rho], [m_enc]
+    p_c = eos_func(rho_c)
+    c2 = C ** 2
+    r0 = dr  # avoid r=0 singularity
 
-    while r < r_max and p > 0.0:
-        if use_running_g:
-            dm, dp = tov_running_g(r, m_enc, p, rho)
-        else:
-            dm, dp = tov_running_g(r, m_enc, p, rho, g_n=G_N)
-            # Classical: override g_of_r by using large r_p so G≈G_N
-            dm = 4.0 * math.pi * r ** 2 * rho
-            denom = r * (r - 2.0 * G_N * m_enc / C ** 2)
-            if denom <= 0:
-                break
-            dp = -(G_N * (rho + p / C ** 2) * (m_enc + 4.0 * math.pi * r ** 3 * p / C ** 2)) / denom
+    def _rhs(r: float, y: "list[float]") -> "list[float]":
+        m_enc, p = y
+        if p <= 0:
+            return [0.0, 0.0]  # surface reached
+        rho = _invert_eos(p, eos_func, rho_c)
+        g_eff = g_of_r(r) if use_running_g else G_N
+        dm_dr = 4.0 * math.pi * r ** 2 * rho
+        denom = r * (r - 2.0 * g_eff * m_enc / c2)
+        if denom <= 0.0:
+            return [dm_dr, -1e30]
+        dp_dr = -(g_eff * (rho + p / c2) *
+                  (m_enc + 4.0 * math.pi * r ** 3 * p / c2)) / denom
+        return [dm_dr, dp_dr]
 
-        m_enc += dm * dr
-        p += dp * dr
-        if p < 0:
-            p = 0.0
-        rho = _invert_eos(p, eos_func, rho)
-        r += dr
-        radii.append(r)
-        pressures.append(p)
-        densities.append(rho)
-        masses.append(m_enc)
+    def _surface_event(r: float, y: "list[float]") -> float:
+        return y[1]  # p = 0 is the surface
+
+    _surface_event.terminal = True
+    _surface_event.direction = -1
+
+    sol = solve_ivp(
+        _rhs,
+        (r0, r_max),
+        [0.0, p_c],
+        method="RK45",
+        first_step=dr,
+        max_step=100.0,
+        rtol=1e-8,
+        atol=1e-10,
+        events=_surface_event,
+        dense_output=True,
+    )
+
+    radii = sol.t.tolist()
+    m_vals = sol.y[0].tolist()
+    p_vals = sol.y[1].tolist()
+    rho_vals = [_invert_eos(max(p, 0.0), eos_func, rho_c) for p in p_vals]
+
+    r_final = radii[-1]
+    m_final = m_vals[-1]
 
     return {
-        "R_km": r / 1e3,
-        "M_msun": m_enc / M_SUN,
+        "R_km": r_final / 1e3,
+        "M_msun": m_final / M_SUN,
         "radii": radii,
-        "pressures": pressures,
-        "densities": densities,
-        "masses": masses,
+        "pressures": p_vals,
+        "densities": rho_vals,
+        "masses": m_vals,
     }
 
 

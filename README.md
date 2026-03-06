@@ -29,6 +29,9 @@ pip install -e ".[jupyter]"
 # Download Oracle Database from Zenodo (5.1 GB)
 wget -P data/ https://zenodo.org/records/18863347/files/oracle_db.parquet
 wget -P data/ https://zenodo.org/records/18863347/files/oracle_gold.parquet
+
+# Download SPARC galaxy database (required for rotation-curve training/validation)
+python data/download_sparc.py
 ```
 
 **Requirements:** Python ≥ 3.10, PyTorch ≥ 2.1, PyTorch Geometric ≥ 2.4

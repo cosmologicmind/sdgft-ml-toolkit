@@ -208,27 +208,32 @@ class SDGFTPredictor:
 
         n_total = len(params)
 
-        # Use first ensemble member for batch prediction (speed)
-        model = self.models[0]
-        norms = self.norms[0]
+        # Use all ensemble members and average (consistent with predict_with_uncertainty)
+        all_member_preds = []
 
-        all_preds = np.empty((n_total, self.n_obs), dtype=np.float32)
+        for model, norms in zip(self.models, self.norms):
+            member_preds = np.empty((n_total, self.n_obs), dtype=np.float32)
 
-        for start in range(0, n_total, batch_size):
-            end = min(start + batch_size, n_total)
-            batch = torch.from_numpy(params[start:end]).to(self.device)
+            for start in range(0, n_total, batch_size):
+                end = min(start + batch_size, n_total)
+                batch = torch.from_numpy(params[start:end]).to(self.device)
 
-            B = batch.shape[0]
-            ei = self.edge_index.clone()
-            offsets = torch.arange(B, device=self.device).repeat_interleave(
-                self.edge_index.shape[1]
-            ) * self.n_obs
-            ei_batched = ei.repeat(1, B) + offsets.unsqueeze(0)
+                B = batch.shape[0]
+                ei = self.edge_index.clone()
+                offsets = torch.arange(B, device=self.device).repeat_interleave(
+                    self.edge_index.shape[1]
+                ) * self.n_obs
+                ei_batched = ei.repeat(1, B) + offsets.unsqueeze(0)
 
-            with torch.no_grad():
-                raw = model(batch, ei_batched)
-                raw_np = raw.cpu().numpy().reshape(B, self.n_obs)
-                all_preds[start:end] = raw_np * norms["std"] + norms["mean"]
+                with torch.no_grad():
+                    raw = model(batch, ei_batched)
+                    raw_np = raw.cpu().numpy().reshape(B, self.n_obs)
+                    member_preds[start:end] = raw_np * norms["std"] + norms["mean"]
+
+            all_member_preds.append(member_preds)
+
+        # Ensemble mean across members
+        all_preds = np.stack(all_member_preds, axis=0).mean(axis=0)
 
         df = pd.DataFrame(params, columns=["delta", "delta_g", "phi"])
         for i, name in enumerate(self.obs_names):

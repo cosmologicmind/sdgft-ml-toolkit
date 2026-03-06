@@ -16,7 +16,7 @@ from __future__ import annotations
 import math
 from fractions import Fraction
 
-from .constants import DELTA, DELTA_F, DELTA_G, DELTA_G_F, PHI, SIN2_30
+from .constants import DELTA, DELTA_F, DELTA_G, DELTA_G_F, PHI, SIN2_30, R_P, R_H, KPC_M
 
 # ── Tree-level D* ─────────────────────────────────────────────────
 
@@ -87,7 +87,22 @@ GAMMA_GEO_FP_SQ: float = GAMMA_GEO_FP ** 2
 
 assert GAMMA_GEO_TREE == Fraction(1, 1608)
 
+# Near-identity: λ_geo / γ_geo ≈ m_μ/m_e.
+# Numerically: with λ_geo = δ²/D*² and γ_geo = δ²/D*,
+# their ratio λ_geo/γ_geo = 1/D* = 24/67 doesn’t yield 207.
+# But 335/φ ≈ 207.1 vs m_μ/m_e ≈ 206.77 is a 0.2% near-identity
+# connecting the Fibonacci sector (φ) with the lepton mass hierarchy.
+# This is noted but NOT used in any derivation — it may hint at
+# deeper structure linking φ-based constants to the mass spectrum.
+
 # ── Gravity exponents ─────────────────────────────────────────────
+
+# Gravitational-wave speed: c_T = c exactly.
+# f(R) gravity is a subset of Horndeski theory with G₄ = F(R), G₅ = 0.
+# The Horndeski tensor-speed parameter is α_T = [G₅_X Ḣ − G₅_φ]/G₄.
+# Since G₅ ≡ 0 for f(R), α_T = 0 identically ⇒ c_T²/c² = 1/(1+α_T) = 1.
+# This is confirmed by GW170817: |c_T/c − 1| < 6×10⁻¹⁶.
+# No numerical computation needed — this is a theorem for all f(R) theories.
 
 ALPHA_M_TREE = Fraction(19, 86)
 """Planck-mass run-rate α_M = (n − 1)/(2n − 1) = 19/86."""
@@ -111,15 +126,23 @@ ALPHA_EM_TREE: float = alpha_em()
 ALPHA_EM_INV_TREE: float = 1.0 / ALPHA_EM_TREE
 
 
-def _mu_e_ratio(delta: float = DELTA_F, delta_g: float = DELTA_G_F,
-                phi: float = PHI) -> float:
-    """Muon-to-electron mass ratio from SDGFT."""
-    return phi ** 3 / (2.0 * delta) * (1.0 + delta_g)
+def _mu_e_ratio(d_star: float = D_STAR_TREE_F,
+                delta: float = DELTA_F) -> float:
+    """Muon-to-electron mass ratio: m_μ/m_e = 3/(2α_em) + 1 + Δ.
+
+    Uses the SDGFT tree-level α_em derived from D*.
+    """
+    ae = alpha_em(d_star)
+    return 3.0 / (2.0 * ae) + 1.0 + delta
+
+
+def _tau_mu_ratio(d_star: float = D_STAR_TREE_F) -> float:
+    """Tau-to-muon mass ratio: m_τ/m_μ = 6·D*."""
+    return 6.0 * d_star
 
 
 MU_E_RATIO: float = _mu_e_ratio()
-
-TAU_MU_RATIO_TREE: float = PHI ** 4 * DELTA_G_F / (2.0 * DELTA_F)
+TAU_MU_RATIO_TREE: float = _tau_mu_ratio()
 TAU_E_RATIO_TREE: float = MU_E_RATIO * TAU_MU_RATIO_TREE
 
 # ── Mixing angles ────────────────────────────────────────────────
@@ -143,11 +166,11 @@ def theta_13(delta: float = DELTA_F) -> float:
 
 
 def transition_radius_kpc(
-    r_h: float = 4.4e26,
-    r_p: float = 1.616e-35,
+    r_h: float = R_H,
+    r_p: float = R_P,
     d_star: float = D_STAR_TREE_F,
     delta_g: float = DELTA_G_F,
-    kpc_m: float = 3.0857e19,
+    kpc_m: float = KPC_M,
 ) -> float:
     """SDGFT galactic transition radius [kpc]."""
     r_trans_m = r_h * (r_p / r_h) ** (d_star * delta_g)
@@ -161,6 +184,13 @@ EPSILON_GAL: float = 0.16
 """Observed galactic ε from SPARC fits."""
 
 B_TF_TREE = Fraction(91, 24)
-"""Tully-Fisher slope b = 91/24 ≈ 3.792."""
+"""Tully-Fisher slope b = 91/24 = D* + 1 ≈ 3.792.
+
+Notable identity: b_TF = D*_tree + 1 exactly.
+The baryonic TF relation M_bar ∝ v_flat^{D*+1} directly encodes
+the effective dimension in galaxy luminosity scaling.
+"""
+
+assert B_TF_TREE == D_STAR_TREE + 1, "b_TF must equal D* + 1"
 
 B_TF_TREE_F: float = float(B_TF_TREE)

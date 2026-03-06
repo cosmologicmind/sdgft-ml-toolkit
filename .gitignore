@@ -27,3 +27,7 @@ Thumbs.db
 
 # Large data (download separately – see README)
 data/*.parquet
+data/sparc/
+
+# SPARC data (download via data/download_sparc.py)
+data/sparc/

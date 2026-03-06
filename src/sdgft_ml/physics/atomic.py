@@ -90,7 +90,26 @@ RYDBERG_GEO_CORRECTION: float = rydberg_geo_correction()
 FINE_STRUCTURE_2P: float = ALPHA_OBS ** 2 * R_INF_C_MHZ / 16.0
 FINE_STRUCTURE_2P_OBS: float = 10_969.04
 
-# ── Muonic Lamb shift (geometric part) ───────────────────────────
+# ── Muonic Lamb shift (geometric part) ────────────────────────
+#
+# The muonic hydrogen Lamb shift scales approximately as (m_μ/m_e)^3
+# for the leading self-energy contribution, NOT linearly.
+# The observed value is ~202 meV = ~49 THz, dominated by nuclear structure.
+# Here we provide the geometric SDGFT correction only (same γ_geo form).
 
-LAMB_SHIFT_MUONIC_TREE: float = LAMB_SHIFT_TREE * 206.7682830
-LAMB_SHIFT_MUONIC_OBS_MHZ: float = 202.3706  # meV (diagnostic)
+_MU_E_MASS_RATIO: float = 206.7682830
+
+LAMB_SHIFT_MUONIC_TREE: float = LAMB_SHIFT_TREE * _MU_E_MASS_RATIO ** 3
+"""Muonic Lamb shift ~ L_tree × (m_μ/m_e)³ [MHz].  Leading-order geometric scaling.
+
+Note: this is a rough (m/m_e)^3 scaling of the self-energy contribution.
+The full muonic Lamb shift is dominated by proton charge-radius effects
+and requires QED+nuclear structure beyond the geometric SDGFT piece.
+"""
+
+LAMB_SHIFT_MUONIC_OBS_MEV: float = 202.3706
+"""Observed muonic hydrogen 2S-2P Lamb shift [meV].  (Pohl et al. 2010)."""
+
+# Conversion: 1 meV ≈ 241.799 GHz = 241799 MHz
+_MEV_TO_MHZ: float = 241_799.0
+LAMB_SHIFT_MUONIC_OBS_MHZ: float = LAMB_SHIFT_MUONIC_OBS_MEV * _MEV_TO_MHZ

@@ -134,9 +134,9 @@ def pmns_matrix(theta_12_deg: float | None = None,
     """3×3 PMNS matrix (PDG parametrisation)."""
     if theta_12_deg is None or theta_23_deg is None or theta_13_deg is None:
         t12, t23, t13 = pmns_angles_deg()
-        theta_12_deg = theta_12_deg or t12
-        theta_23_deg = theta_23_deg or t23
-        theta_13_deg = theta_13_deg or t13
+        theta_12_deg = theta_12_deg if theta_12_deg is not None else t12
+        theta_23_deg = theta_23_deg if theta_23_deg is not None else t23
+        theta_13_deg = theta_13_deg if theta_13_deg is not None else t13
     if delta_cp_rad is None:
         delta_cp_rad = DELTA_CP
 

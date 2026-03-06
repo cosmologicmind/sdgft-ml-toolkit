@@ -233,13 +233,15 @@ def rotation_curve(model: GalaxyModel, radii_kpc: list[float],
         if r > r_trans_kpc:
             log_fac = math.log(r / r_trans_kpc)
             if screening is not None:
-                if screening.sigma_screen <= 0:
-                    # Auto: Σ at r_trans
-                    screening.sigma_screen = sum(
+                sigma_scr = screening.sigma_screen
+                if sigma_scr <= 0:
+                    # Auto: Σ at r_trans (compute locally, don't mutate config)
+                    sigma_scr = sum(
                         surface_density_exponential(r_trans_kpc, c["mass_msun"], c["h_kpc"])
                         for c in model.components
                     )
-                s = screening_factor(sigma_total, screening)
+                s = screening_factor(sigma_total,
+                                     ScreeningConfig(sigma_scr, screening.steepness))
                 g_ratio = 1.0 + s * epsilon * log_fac
             else:
                 g_ratio = 1.0 + epsilon * log_fac
