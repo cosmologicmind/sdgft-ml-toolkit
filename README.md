@@ -25,6 +25,7 @@ Six-Dimensional Geometric Field Theory (SDGFT) is a parameter-free unified theor
 git clone https://github.com/cosmologicmind/sdgft-ml-toolkit.git
 cd sdgft-ml-toolkit
 pip install -e ".[jupyter]"
+nbstripout --install   # auto-strips notebook outputs before every commit
 
 # Download Oracle Database from Zenodo (5.1 GB)
 wget -P data/ https://zenodo.org/records/18863347/files/oracle_db.parquet
