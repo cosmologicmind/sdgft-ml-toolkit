@@ -25,6 +25,9 @@ outputs/
 .DS_Store
 Thumbs.db
 
+# data/*.png 
+data/*.png
+
 # Large data (download separately – see README)
 data/*.parquet
 data/sparc/

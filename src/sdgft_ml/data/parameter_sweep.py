@@ -445,7 +445,7 @@ class ParametricForward:
         "alpha_m_tree", "alpha_b_tree",
         "eta_slip_survey", "eta_slip_horizon",
         "n_efolds_fp", "n_s", "r_tensor", "beta_iso",
-        "epsilon_sr", "n_t", "eta_sr",
+        "epsilon_sr", "eta_sr",
         "omega_b", "omega_c", "omega_de", "omega_m",
         "w_de_fp", "eta_b", "s_8",
         "alpha_em_inv_tree", "alpha_em_inv_fp",
