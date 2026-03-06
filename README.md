@@ -17,7 +17,7 @@ Six-Dimensional Geometric Field Theory (SDGFT) is a parameter-free unified theor
 | **Oracle Database** | 100M pre-computed parameter points (61.7M kept, 35M Gold Standard) stored in Parquet with χ² scores against 22 experiments. |
 | **CVAE Inverter** | Conditional variational autoencoder solving the inverse problem: observables → (Δ, δ_g, φ). |
 | **Theory Engine** | Self-contained `ParametricForward` — all 37 SDGFT formulas in pure Python, no external dependencies. |
-| **6 Notebooks** | From quickstart to frontier physics predictions, each fully self-contained. |
+| **11 Notebooks** | From quickstart to frontier physics predictions, each fully self-contained. |
 
 ## Installation
 
@@ -101,6 +101,7 @@ print(f"r    = {obs['r_tensor']:.4f}")       # → 0.0135
 | 03 | [Experimental Validation](notebooks/03_experimental_validation.ipynb) | 22-observable scorecard against PDG/Planck/NuFIT |
 | 04 | [Predictions & Frontier](notebooks/04_predictions_frontier.ipynb) | W-boson mass, muon g-2, dark radiation, gravitational waves |
 | 05 | [Inverse Problem](notebooks/05_inverse_problem.ipynb) | CVAE parameter recovery from observables |
+|...
 
 ## Project Structure
 
